@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CareRoute | Use Cases</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">+</span><span>CareRoute</span></div>
+        <p class="network-label">Hospital network<br /><strong>Ghana operations</strong></p>
+        <nav>
+          <button class="nav-item active" data-view="usecases">Use cases</button>
+          <a class="nav-item" href="/" style="text-decoration:none;color:inherit">Operations console</a>
+        </nav>
+        <div class="sidebar-bottom"><span class="live-dot"></span> System online</div>
+      </aside>
+
+      <section class="content">
+        <header class="topbar">
+          <div><p class="eyebrow">Real-world scenarios</p><h1>CareRoute Use Cases</h1></div>
+        </header>
+
+        <section class="view active-view" id="usecases">
+
+          <!-- USE CASE CARDS GRID -->
+          <div class="usecase-grid">
+
+            <!-- UC1: Emergency Ambulance Dispatch -->
+            <article class="usecase-card" data-uc="1">
+              <div class="uc-badge emergency">Emergency</div>
+              <h2>Emergency Ambulance Dispatch</h2>
+              <p class="uc-context">A road accident victim in Axim needs immediate transfer to Korle-Bu Teaching Hospital in Accra. The nearest available ambulance must be found, and the fastest route calculated.</p>
+              <div class="uc-algorithms">
+                <span class="pill teal">Dijkstra</span>
+                <span class="pill neutral">Greedy Assignment</span>
+                <span class="pill neutral">Priority Queue</span>
+              </div>
+              <button class="primary-button uc-run" data-uc="1">Run scenario</button>
+            </article>
+
+            <!-- UC2: Blood Supply Emergency -->
+            <article class="usecase-card" data-uc="2">
+              <div class="uc-badge urgent">Urgent</div>
+              <h2>Blood Supply Delivery</h2>
+              <p class="uc-context">Tema General Hospital has an emergency surgery requiring O-negative blood. A Blood Transport Unit must deliver from the nearest depot before the 2-hour deadline.</p>
+              <div class="uc-algorithms">
+                <span class="pill teal">Dijkstra</span>
+                <span class="pill neutral">Priority Scheduling</span>
+                <span class="pill neutral">Resource Matching</span>
+              </div>
+              <button class="primary-button uc-run" data-uc="2">Run scenario</button>
+            </article>
+
+            <!-- UC3: Rural Outreach Deployment -->
+            <article class="usecase-card" data-uc="3">
+              <div class="uc-badge outreach">Outreach</div>
+              <h2>Rural Clinic Outreach</h2>
+              <p class="uc-context">The Ghana Health Service needs to deploy a Mobile Clinic Van to serve three underserved communities in the Bono region. The system must find the optimal route connecting all stops.</p>
+              <div class="uc-algorithms">
+                <span class="pill teal">BFS/DFS</span>
+                <span class="pill neutral">MST (Prim)</span>
+                <span class="pill neutral">Route Planning</span>
+              </div>
+              <button class="primary-button uc-run" data-uc="3">Run scenario</button>
+            </article>
+
+            <!-- UC4: Budget-Constrained Dispatch -->
+            <article class="usecase-card" data-uc="4">
+              <div class="uc-badge planning">Planning</div>
+              <h2>Budget-Constrained Dispatch</h2>
+              <p class="uc-context">With only 200 response-time minutes available today, the dispatch centre must select the optimal set of requests to handle. The 0/1 Knapsack DP ensures maximum urgency value within the budget.</p>
+              <div class="uc-algorithms">
+                <span class="pill teal">Dynamic Programming</span>
+                <span class="pill neutral">0/1 Knapsack</span>
+                <span class="pill neutral">Greedy Fallback</span>
+              </div>
+              <button class="primary-button uc-run" data-uc="4">Run scenario</button>
+            </article>
+
+            <!-- UC5: Mass Casualty Multi-Dispatch -->
+            <article class="usecase-card" data-uc="5">
+              <div class="uc-badge critical">Critical</div>
+              <h2>Mass Casualty Multi-Dispatch</h2>
+              <p class="uc-context">A building collapse in Kumasi has generated 5 simultaneous emergency requests. All available resources across the region must be assigned using the greedy algorithm, with full audit trail for accountability.</p>
+              <div class="uc-algorithms">
+                <span class="pill teal">Greedy Assignment</span>
+                <span class="pill neutral">Priority Queue</span>
+                <span class="pill neutral">Audit Stack (Undo)</span>
+              </div>
+              <button class="primary-button uc-run" data-uc="5">Run scenario</button>
+            </article>
+
+            <!-- UC6: Fastest ID Lookup -->
+            <article class="usecase-card" data-uc="6">
+              <div class="uc-badge lookup">Lookup</div>
+              <h2>Request Status Lookup</h2>
+              <p class="uc-context">A hospital administrator needs to instantly find request REQ0150 among 300 records. The system compares BST, Red-Black Tree, and B-Tree index lookup speeds to demonstrate O(log n) efficiency.</p>
+              <div class="uc-algorithms">
+                <span class="pill teal">BST</span>
+                <span class="pill teal">Red-Black Tree</span>
+                <span class="pill teal">B-Tree</span>
+              </div>
+              <button class="primary-button uc-run" data-uc="6">Run scenario</button>
+            </article>
+
+          </div>
+
+          <!-- SCENARIO RESULT PANEL -->
+          <div id="scenario-panel" class="scenario-panel" style="display:none">
+            <div class="scenario-header">
+              <div>
+                <p class="eyebrow" id="scenario-eyebrow">Scenario</p>
+                <h2 id="scenario-title">--</h2>
+              </div>
+              <button id="scenario-close" class="text-button">Close</button>
+            </div>
+
+            <div class="scenario-steps" id="scenario-steps"></div>
+
+            <div class="scenario-output" id="scenario-output"></div>
+          </div>
+
+        </section>
+      </section>
+    </main>
+
+    <script>
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const fallbackLocations = {
+      L001:'Korle-Bu Teaching Hospital',L002:'Komfo Anokye Teaching Hospital',L004:'Ridge Hospital',
+      L005:'Tamale Teaching Hospital',L006:'Cape Coast Teaching Hospital',L008:'Ho Teaching Hospital',
+      L012:'Trust Hospital',L018:'Adabraka Polyclinic',L021:'Tema General Hospital',
+      L025:'Manhyia District Hospital',L027:'Obuasi Government Hospital',L030:'Koforidua Regional Hospital',
+      L034:'Berekum Holy Family Hospital',L041:'Kasoa Polyclinic',L045:'Yendi Municipal Hospital',
+      L048:'Axim Government Hospital',L043:'Akuse Government Hospital',L026:'Ejisu Government Hospital',
+      L009:'Sunyani Regional Hospital',L044:'Bawku Presbyterian Hospital',L033:'Techiman Holy Family Hospital',
+      L011:'Nyaho Medical Centre',L047:'Damongo District Hospital',L017:'Mamprobi Polyclinic',
+      L019:'Maamobi General Hospital',L040:'Kaneshie Polyclinic',L038:'Madina Polyclinic'
+    };
+    let locations = [];
+
+    async function loadLocations() {
+      try {
+        const r = await fetch('/api/bootstrap');
+        if (r.ok) { const d = await r.json(); locations = d.locations; return; }
+      } catch {}
+      try {
+        const r = await fetch('../data/locations.csv');
+        if (r.ok) { const text = await r.text(); const [head,...rows] = text.trim().split(/\r?\n/); const keys = head.split(','); locations = rows.map(row => Object.fromEntries(row.split(',').map((v,i) => [keys[i],v]))); }
+      } catch {}
+    }
+
+    function locName(id) {
+      if (!id) return id;
+      const loc = locations.find(l => l.locationId === id);
+      return loc ? loc.name : (fallbackLocations[id] || id);
+    }
+
+    function urgencyBadge(n) {
+      const labels = {5:'Critical',4:'High',3:'Medium',2:'Low',1:'Routine'};
+      return `<span class="urgency u${n}">${labels[n]||n} \u00b7 ${n}/5</span>`;
+    }
+
+    function renderSteps(steps) {
+      return steps.map((s, i) => `
+        <div class="step">
+          <div class="step-num">${i + 1}</div>
+          <div class="step-body">
+            <strong>${s.title}</strong>
+            <p>${s.desc}</p>
+            ${s.code ? `<pre class="step-code">${s.code}</pre>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ---- SCENARIOS ----
+    const scenarios = {
+      1: {
+        title: 'Emergency Ambulance Dispatch',
+        eyebrow: 'Use Case 1',
+        steps: [
+          { title: 'Problem identification', desc: `A critical patient at <strong>${locName('L048')} (Axim)</strong> needs immediate transfer to <strong>${locName('L001')} (Korle-Bu, Accra)</strong>. Urgency = 5 (Critical).` },
+          { title: 'Resource search', desc: 'The system scans all 30 resources. Ambulance R008 at L018 (Adabraka Polyclinic, Accra) is AVAILABLE. Ambulance R002 is BUSY. R021 and R029 are OFFLINE.' },
+          { title: 'Route calculation (Dijkstra)', desc: `Running Dijkstra from L048 across the road graph (100 roads, 50 locations). Each edge uses <code>travelTime \u00d7 roadConditionWeight + ROUTE_PENALTY</code>.`, code: `GraphAlgorithms.dijkstra(graph, "L048")\n// Computes shortest weighted path from Axim to all nodes\n// Result: L048 \u2192 ... \u2192 L001\n// Weighted minutes = result.distance.get("L001")` },
+          { title: 'Assignment', desc: `Assign R008 (Ambulance, capacity 2) to REQ for this emergency. Resource status changes from AVAILABLE \u2192 BUSY. Request status changes to ASSIGNED.` },
+          { title: 'Audit trail', desc: 'Dispatch action pushed to the audit stack (CustomStack). Can be undone if needed.' }
+        ],
+        run: async () => {
+          let html = '<h3>Live results</h3>';
+          try {
+            const r = await fetch('/api/route?from=L048&to=L001');
+            const d = await r.json();
+            if (r.ok) {
+              html += `<div class="result-card success"><strong>Route found</strong><br><span class="muted">${d.minutes} weighted minutes</span><br><span class="muted">Path: ${d.path.map(id => `${id} (${locName(id)})`).join(' \u2192 ')}</span></div>`;
+            } else {
+              html += `<div class="result-card error"><strong>No route</strong><br><span class="muted">${d.error}</span></div>`;
+            }
+          } catch { html += '<div class="result-card"><span class="muted">Start WebServer to see live results</span></div>'; }
+
+          html += '<h3>Resource status</h3>';
+          html += '<table><thead><tr><th>Resource</th><th>Type</th><th>Location</th><th>Status</th></tr></thead><tbody>';
+          html += `<tr><td>R008</td><td>Ambulance</td><td>L018 (${locName('L018')})</td><td><span class="pill teal">AVAILABLE \u2192 assigned</span></td></tr>`;
+          html += `<tr><td>R020</td><td>Ambulance</td><td>L002 (${locName('L002')})</td><td><span class="status ASSIGNED">BUSY</span></td></tr>`;
+          html += `<tr><td>R021</td><td>Ambulance</td><td>L012 (${locName('L012')})</td><td><span class="status CANCELLED">OFFLINE</span></td></tr>`;
+          html += `<tr><td>R029</td><td>Ambulance</td><td>L047 (${locName('L047')})</td><td><span class="status CANCELLED">OFFLINE</span></td></tr>`;
+          html += '</tbody></table>';
+          return html;
+        }
+      },
+
+      2: {
+        title: 'Blood Supply Delivery',
+        eyebrow: 'Use Case 2',
+        steps: [
+          { title: 'Emergency declared', desc: `<strong>${locName('L021')} (Tema General Hospital)</strong> has a critical surgery patient needing O-negative blood within 2 hours. Urgency = 5.` },
+          { title: 'Resource matching', desc: 'Blood Transport Unit R024 is stationed at L021 (same location as the hospital) \u2014 immediate match. R003 at L026 and R010 at L031 are alternatives.' },
+          { title: 'Priority scheduling', desc: 'The scheduling engine places this request at the top of the dispatch queue using urgency-weighted priority score: <code>urgency \u00d7 PRIORITY_WEIGHT = 5 \u00d7 1.3 = 6.5</code>.', code: `SchedulingEngine.dispatchByPriorityScore(activeRequests)\n// This request ranks #1 with score 6.5\n// PRIORITY_WEIGHT = 1.3 (derived from team index numbers)` },
+          { title: 'Direct dispatch', desc: `Since R024 is at the same location (L021), no route calculation needed. Assignment is immediate: R024 \u2192 patient.` },
+          { title: 'Deadline tracking', desc: 'System tracks the 2-hour deadline. If the request is not completed in time, it escalates automatically.' }
+        ],
+        run: async () => {
+          let html = '<h3>Live results</h3>';
+          html += '<div class="result-card success"><strong>Immediate match found</strong><br><span class="muted">Blood Transport Unit R024 is already at L021 (Tema General Hospital)</span><br><span class="muted">Zero travel time \u2014 direct dispatch</span></div>';
+          html += '<h3>Priority queue comparison</h3>';
+          try {
+            const r = await fetch('/api/algorithm?action=schedule&mode=score');
+            const d = await r.json();
+            if (r.ok) {
+              html += '<table><thead><tr><th>#</th><th>Request</th><th>Urgency</th><th>Category</th><th>Route</th></tr></thead><tbody>';
+              d.requests.slice(0, 5).forEach((req, i) => {
+                html += `<tr><td>${i+1}</td><td><strong>${req.requestId}</strong></td><td>${urgencyBadge(req.urgency)}</td><td>${req.category}</td><td>${req.source} \u2192 ${req.destination}</td></tr>`;
+              });
+              html += '</tbody></table>';
+            }
+          } catch { html += '<span class="muted">Start WebServer for live data</span>'; }
+          return html;
+        }
+      },
+
+      3: {
+        title: 'Rural Clinic Outreach',
+        eyebrow: 'Use Case 3',
+        steps: [
+          { title: 'Outreach mission', desc: `Deploy Mobile Clinic Van R006 from <strong>${locName('L034')} (Berekum Holy Family Hospital)</strong> to serve rural communities. The van must visit Bawku (L044), Techiman (L033), and Sunyani (L009).` },
+          { title: 'Graph construction', desc: 'The system builds the road graph from 100 road records connecting 50 locations. Each road has distance, travel time, and condition weight.', code: `DispatchDeliveryService.buildRoadGraph(roads)\n// Graph: 50 nodes, ~100 undirected edges\n// Edge weight = travelTime \u00d7 roadConditionWeight + ROUTE_PENALTY` },
+          { title: 'BFS reachability check', desc: 'BFS from L034 confirms all three target locations are reachable from the starting point.', code: `GraphAlgorithms.bfs(graph, "L034")\n// Visits nodes level-by-level using a queue\n// Confirms: L044, L033, L009 are all reachable` },
+          { title: 'MST for minimum network', desc: 'Prim\'s algorithm finds the minimum-cost road network connecting all visited locations, ensuring the van uses the least fuel.', code: `GraphAlgorithms.prim(graph)\n// Minimum Spanning Tree\n// Total weight = minimum cost to connect all locations` },
+          { title: 'Route optimization', desc: 'Dijkstra computes the shortest path from L034 to each stop, and the system chains them for the full outreach route.' }
+        ],
+        run: async () => {
+          let html = '<h3>Live results</h3>';
+          try {
+            const r = await fetch('/api/mst-detail');
+            const d = await r.json();
+            html += `<div class="result-card"><strong>Prim MST total weight: ${d.primWeight}</strong><br><span class="muted">${d.primEdgeCount} edges in the minimum network</span></div>`;
+            html += `<div class="result-card"><strong>Kruskal MST total weight: ${d.kruskalWeight}</strong><br><span class="muted">${d.kruskalEdgeCount} edges (alternative algorithm)</span></div>`;
+          } catch { html += '<div class="result-card"><span class="muted">Start WebServer for MST data</span></div>'; }
+
+          html += '<h3>Route segments</h3>';
+          const stops = ['L034','L009','L033','L044'];
+          for (let i = 0; i < stops.length - 1; i++) {
+            try {
+              const r = await fetch(`/api/route?from=${stops[i]}&to=${stops[i+1]}`);
+              const d = await r.json();
+              if (r.ok) html += `<div class="result-card success"><strong>${stops[i]} (${locName(stops[i])}) \u2192 ${stops[i+1]} (${locName(stops[i+1])})</strong><br><span class="muted">${d.minutes} weighted minutes \u00b7 ${d.path.length - 1} hops</span></div>`;
+            } catch {}
+          }
+          return html;
+        }
+      },
+
+      4: {
+        title: 'Budget-Constrained Dispatch',
+        eyebrow: 'Use Case 4',
+        steps: [
+          { title: 'Budget constraint', desc: 'The dispatch centre has only <strong>200 response-time minutes</strong> available today. 300 service requests are in the system, but not all can be handled.' },
+          { title: 'Candidate selection', desc: 'Filter to PENDING requests only. These are the requests eligible for dispatch.' },
+          { title: 'Cost estimation', desc: 'Each request is assigned a response-time cost based on urgency: urgency 5 = 10 min, 4 = 15 min, 3 = 25 min, 2 = 35 min, 1 = 45 min.', code: `DynamicProgramming.selectRequestsUnderBudget(pending, 200)\n// 0/1 Knapsack: maximize urgency value within 200 min budget\n// Cost per request: estimateCostMinutes(urgency)\n// Value per request: urgency (1-5)` },
+          { title: 'Optimal selection', desc: 'The DP algorithm selects the combination of requests that maximizes total urgency value without exceeding 200 minutes. This is provably optimal \u2014 no greedy approach can guarantee this.' },
+          { title: 'Comparison with greedy', desc: 'A greedy approach (sort by urgency, take until budget runs out) may miss better combinations. The DP guarantees the global optimum.' }
+        ],
+        run: async () => {
+          let html = '<h3>Live results</h3>';
+          try {
+            const r = await fetch('/api/algorithm?action=budget&minutes=200');
+            const d = await r.json();
+            html += `<div class="result-card success"><strong>${d.requests.length} requests selected</strong><br><span class="muted">Total urgency value: ${d.totalValue} \u00b7 Total cost: ${d.totalCost} minutes</span><br><span class="muted">Budget remaining: ${200 - d.totalCost} minutes</span></div>`;
+            if (d.requests.length > 0) {
+              html += '<h3>Selected requests (optimal set)</h3>';
+              html += '<table><thead><tr><th>Request</th><th>Category</th><th>Urgency</th><th>Cost</th><th>Route</th></tr></thead><tbody>';
+              d.requests.forEach(req => {
+                const costMap = {5:10,4:15,3:25,2:35,1:45};
+                html += `<tr><td><strong>${req.requestId}</strong></td><td>${req.category}</td><td>${urgencyBadge(req.urgency)}</td><td>${costMap[req.urgency] || '?'} min</td><td>${req.source} \u2192 ${req.destination}</td></tr>`;
+              });
+              html += '</tbody></table>';
+            }
+          } catch { html += '<div class="result-card"><span class="muted">Start WebServer to run DP budget selection</span></div>'; }
+
+          html += '<h3>Budget slider</h3>';
+          html += '<div style="margin-top:8px"><input type="range" id="uc-budget-slider" min="60" max="720" value="200" style="width:100%"><strong id="uc-budget-val">200 min</strong></div>';
+          html += '<div id="uc-budget-dynamic" style="margin-top:12px"></div>';
+          return html;
+        }
+      },
+
+      5: {
+        title: 'Mass Casualty Multi-Dispatch',
+        eyebrow: 'Use Case 5',
+        steps: [
+          { title: 'Incident reported', desc: `A building collapse in <strong>${locName('L025')} (Kumasi)</strong> generates 5 simultaneous emergency requests with urgency 4\u20135.` },
+          { title: 'Greedy assignment', desc: 'The SchedulingEngine sorts all 5 requests by urgency (highest first) and assigns the first AVAILABLE resource at a matching or nearby home location.', code: `SchedulingEngine.greedyAssignResources(pending, resources)\n// For each request (in urgency order):\n//   Find first AVAILABLE resource at same home location\n//   If none, find any AVAILABLE resource\n//   Mark resource as BUSY\n//   Record assignment on audit stack` },
+          { title: 'Audit trail', desc: 'Every assignment is pushed to the CustomStack audit log. This enables undo of any dispatch action for accountability.', code: `DispatchDeliveryService.assignResources(pending, resources)\n// auditLog.push("ASSIGN R008 -> REQ0301")\n// auditLog.push("ASSIGN R017 -> REQ0302")\n// ... one entry per assignment` },
+          { title: 'Undo capability', desc: 'If a mistake is made (wrong resource assigned), the most recent dispatch can be undone by popping the audit stack. The resource returns to AVAILABLE status.' },
+          { title: 'Post-incident review', desc: 'The full audit log provides a chronological record of every dispatch decision for事后 review and accountability.' }
+        ],
+        run: async () => {
+          let html = '<h3>Live results</h3>';
+          try {
+            const r = await fetch('/api/dispatch', { method: 'POST' });
+            const d = await r.json();
+            if (d.assignments.length === 0) {
+              html += `<div class="result-card"><strong>No assignments made</strong><br><span class="muted">${d.pendingCount} pending requests, ${d.availableResources} available resources. Try creating requests first.</span></div>`;
+            } else {
+              html += `<div class="result-card success"><strong>${d.assignments.length} resources assigned</strong><br><span class="muted">Audit log depth: ${d.auditLogSize}</span></div>`;
+              html += '<h3>Assignment table</h3>';
+              html += '<table><thead><tr><th>Request</th><th>Assigned Resource</th><th>Action</th></tr></thead><tbody>';
+              d.assignments.forEach(a => {
+                html += `<tr><td><strong>${a.requestId}</strong></td><td>${a.resourceId}</td><td><span class="pill teal">ASSIGNED</span></td></tr>`;
+              });
+              html += '</tbody></table>';
+              html += `<div style="margin-top:12px"><button id="uc-undo-btn" class="assign-button" style="background:var(--red);color:#fff">Undo last dispatch</button> <span id="uc-undo-result" class="muted"></span></div>`;
+            }
+          } catch { html += '<div class="result-card"><span class="muted">Start WebServer for dispatch</span></div>'; }
+          return html;
+        }
+      },
+
+      6: {
+        title: 'Request Status Lookup',
+        eyebrow: 'Use Case 6',
+        steps: [
+          { title: 'Lookup request', desc: 'An administrator needs to find <strong>REQ0150</strong> among 300 service records. Manual searching is slow \u2014 the system uses tree-based indexes.' },
+          { title: 'BST index', desc: 'Binary Search Tree inserts all 300 requests keyed by requestId. Search traverses left/right based on comparison.', code: `CustomBST.insert(requestId, serviceRequest)\nCustomBST.search("REQ0150")\n// Height may be unbalanced (worst case O(n))` },
+          { title: 'Red-Black Tree index', desc: 'Self-balancing LLRB tree guarantees O(log n) height. Rotations and color-flips maintain balance after every insert.', code: `RedBlackTree.insert(requestId, serviceRequest)\nRedBlackTree.search("REQ0150")\n// Guaranteed O(log n) \u2014 no worse than ~8 levels for 300 records` },
+          { title: 'B-Tree index', desc: 'Multi-way search tree (order 5) simulates database index pages. Nodes split on overflow, keeping the tree shallow.', code: `BTree(5).insert(requestId, serviceRequest)\nBTree.search("REQ0150")\n// Very shallow \u2014 typically 2-3 levels for 300 records` },
+          { title: 'Comparison', desc: 'The system runs all three lookups and compares tree heights. BST may be tallest (unbalanced), Red-Black is balanced, B-Tree is shallowest.' }
+        ],
+        run: async () => {
+          let html = '<h3>Live results</h3>';
+          try {
+            const r = await fetch('/api/index-detail?requestId=REQ0150');
+            const d = await r.json();
+            if (d.bstResult) {
+              html += `<div class="result-card success"><strong>${d.bstResult.requestId} \u00b7 ${d.bstResult.category}</strong><br><span class="muted">${d.bstResult.source} \u2192 ${d.bstResult.destination} \u00b7 Urgency ${d.bstResult.urgency} \u00b7 ${d.bstResult.status}</span></div>`;
+            } else {
+              html += `<div class="result-card"><strong>REQ0150</strong><br><span class="muted">Not found in dataset. Showing tree heights for ${d.totalRecords} records.</span></div>`;
+            }
+            html += '<h3>Index comparison</h3>';
+            html += '<table><thead><tr><th>Index Type</th><th>Tree Height</th><th>Time Complexity</th><th>Balanced?</th></tr></thead><tbody>';
+            html += `<tr><td>Binary Search Tree</td><td><strong>${d.bstHeight}</strong></td><td>O(h) \u2014 worst O(n)</td><td>No</td></tr>`;
+            html += `<tr><td>Red-Black Tree</td><td><strong>${d.redBlackHeight}</strong></td><td>O(log n)</td><td>Yes (LLRB)</td></tr>`;
+            html += `<tr><td>B-Tree (order 5)</td><td><strong>${d.bTreeHeight}</strong></td><td>O(log n)</td><td>Yes (multi-way)</td></tr>`;
+            html += '</tbody></table>';
+            html += `<div class="result-card" style="margin-top:12px"><span class="muted">Over ${d.totalRecords} records: Red-Black and B-Tree heights are significantly lower than BST, guaranteeing faster lookups.</span></div>`;
+          } catch { html += '<div class="result-card"><span class="muted">Start WebServer for tree index lookup</span></div>'; }
+          return html;
+        }
+      }
+    };
+
+    async function runScenario(num) {
+      const sc = scenarios[num];
+      if (!sc) return;
+      $('#scenario-eyebrow').textContent = sc.eyebrow;
+      $('#scenario-title').textContent = sc.title;
+      $('#scenario-steps').innerHTML = renderSteps(sc.steps);
+      $('#scenario-output').innerHTML = '<p class="muted">Loading...</p>';
+      $('#scenario-panel').style.display = 'block';
+      $('#scenario-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const output = await sc.run();
+      $('#scenario-output').innerHTML = output;
+
+      // Wire up dynamic elements
+      if (num === 4) {
+        const slider = $('#uc-budget-slider');
+        if (slider) {
+          slider.oninput = async () => {
+            const val = slider.value;
+            $('#uc-budget-val').textContent = val + ' min';
+            try {
+              const r = await fetch(`/api/algorithm?action=budget&minutes=${val}`);
+              const d = await r.json();
+              const costMap = {5:10,4:15,3:25,2:35,1:45};
+              let h = `<div class="result-card success"><strong>${d.requests.length} requests selected</strong> \u00b7 Value: ${d.totalValue} \u00b7 Cost: ${d.totalCost} min</div>`;
+              if (d.requests.length > 0) {
+                h += d.requests.map(r => `<span class="pill neutral">${r.requestId} (urg=${r.urgency})</span>`).join(' ');
+              }
+              $('#uc-budget-dynamic').innerHTML = h;
+            } catch {}
+          };
+        }
+      }
+      if (num === 5) {
+        setTimeout(() => {
+          const btn = $('#uc-undo-btn');
+          if (btn) btn.onclick = async () => {
+            try {
+              const r = await fetch('/api/undo', { method: 'POST' });
+              const d = await r.json();
+              $('#uc-undo-result').textContent = d.ok ? `Undid: ${d.undone}` : d.message;
+            } catch {}
+          };
+        }, 100);
+      }
+    }
+
+    async function init() {
+      await loadLocations();
+      $$('.uc-run').forEach(btn => {
+        btn.onclick = () => runScenario(+btn.dataset.uc);
+      });
+      $('#scenario-close').onclick = () => { $('#scenario-panel').style.display = 'none'; };
+    }
+    init();
+    </script>
+  </body>
+</html>

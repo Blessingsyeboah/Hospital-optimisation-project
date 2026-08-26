@@ -1,0 +1,18 @@
+# Java compiled/generated files
+build/
+*.class
+
+# IDE/editor files
+.vscode/
+.idea/
+*.iml
+
+# SQLite database
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

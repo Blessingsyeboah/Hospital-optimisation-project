@@ -1,0 +1,51 @@
+locationId,name,area,type,latitude,longitude
+L001,Korle-Bu Teaching Hospital,Accra,TEACHING,5.58085,-0.18685
+L002,Komfo Anokye Teaching Hospital,Kumasi,TEACHING,6.68921,-1.6028
+L003,37 Military Hospital,Accra,MILITARY,5.57986,-0.2036
+L004,Ridge Hospital,Accra,GENERAL,5.60976,-0.18361
+L005,Tamale Teaching Hospital,Tamale,TEACHING,9.4178,-0.83643
+L006,Cape Coast Teaching Hospital,Cape Coast,TEACHING,5.11913,-1.23051
+L007,Effia-Nkwanta Regional Hospital,Sekondi-Takoradi,REGIONAL,4.89956,-1.75021
+L008,Ho Teaching Hospital,Ho,TEACHING,6.5956,0.47805
+L009,Sunyani Regional Hospital,Sunyani,REGIONAL,7.31654,-2.30789
+L010,Bolgatanga Regional Hospital,Bolgatanga,REGIONAL,10.78238,-0.83241
+L011,Nyaho Medical Centre,Accra,PRIVATE,5.61481,-0.17624
+L012,Trust Hospital,Accra,PRIVATE,5.58631,-0.20191
+L013,Lister Hospital,Accra,PRIVATE,5.63249,-0.16124
+L014,Achimota Hospital,Accra,GENERAL,5.62201,-0.15702
+L015,La General Hospital,Accra,GENERAL,5.60452,-0.21242
+L016,Legon Hospital,Accra,GENERAL,5.59412,-0.18355
+L017,Mamprobi Polyclinic,Accra,CLINIC,5.59123,-0.18955
+L018,Adabraka Polyclinic,Accra,CLINIC,5.62629,-0.17476
+L019,Maamobi General Hospital,Accra,GENERAL,5.60835,-0.21552
+L020,Ashaiman Polyclinic,Ashaiman,CLINIC,5.70865,-0.04119
+L021,Tema General Hospital,Tema,GENERAL,5.66513,-0.02267
+L022,Manhean Health Centre,Tema,CLINIC,5.67494,-0.01669
+L023,Kumasi South Hospital,Kumasi,GENERAL,6.66549,-1.62402
+L024,Suntreso Government Hospital,Kumasi,GENERAL,6.70351,-1.61839
+L025,Manhyia District Hospital,Kumasi,DISTRICT,6.68796,-1.59939
+L026,Ejisu Government Hospital,Ejisu,DISTRICT,6.70222,-1.3715
+L027,Obuasi Government Hospital,Obuasi,DISTRICT,6.22807,-1.67205
+L028,Winneba Trauma & Specialist Hospital,Winneba,GENERAL,5.35218,-0.65158
+L029,Swedru Government Hospital,Agona Swedru,DISTRICT,5.51677,-0.72226
+L030,Koforidua Regional Hospital,Koforidua,REGIONAL,6.06693,-0.24772
+L031,Eastern Regional Hospital Annex,Koforidua,GENERAL,6.11721,-0.28385
+L032,Wa Regional Hospital,Wa,REGIONAL,10.06744,-2.5117
+L033,Techiman Holy Family Hospital,Techiman,MISSION,7.59003,-1.95536
+L034,Berekum Holy Family Hospital,Berekum,MISSION,7.47626,-2.5774
+L035,Nkawkaw Government Hospital,Nkawkaw,DISTRICT,6.54741,-0.76854
+L036,Akim Oda Government Hospital,Akim Oda,DISTRICT,5.95257,-0.95367
+L037,Dodowa Health Centre,Dodowa,CLINIC,5.88604,-0.09641
+L038,Madina Polyclinic,Madina,CLINIC,5.69349,-0.17824
+L039,Weija Leprosarium & General Hospital,Weija,GENERAL,5.58469,-0.33319
+L040,Kaneshie Polyclinic,Accra,CLINIC,5.60243,-0.16393
+L041,Kasoa Polyclinic,Kasoa,CLINIC,5.52928,-0.42904
+L042,Nsawam Government Hospital,Nsawam,DISTRICT,5.79444,-0.37801
+L043,Akuse Government Hospital,Akuse,DISTRICT,6.09264,0.12254
+L044,Bawku Presbyterian Hospital,Bawku,MISSION,11.05499,-0.24033
+L045,Yendi Municipal Hospital,Yendi,DISTRICT,9.44207,0.01599
+L046,Salaga Government Hospital,Salaga,DISTRICT,8.53561,-0.51757
+L047,Damongo District Hospital,Damongo,DISTRICT,9.08398,-1.79713
+L048,Axim Government Hospital,Axim,DISTRICT,4.88518,-2.22983
+L049,Half Assini Government Hospital,Half Assini,DISTRICT,5.10774,-2.86342
+L050,Hohoe Municipal Hospital,Hohoe,DISTRICT,7.139,0.49171

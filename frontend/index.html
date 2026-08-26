@@ -16,7 +16,10 @@
           <button class="nav-item" data-view="requests">Service requests <span id="pending-count"></span></button>
           <button class="nav-item" data-view="resources">Resources</button>
           <button class="nav-item" data-view="routing">Route planner</button>
+          <button class="nav-item" data-view="dispatch">Dispatch console</button>
+          <button class="nav-item" data-view="search-sort">Search &amp; sort lab</button>
           <button class="nav-item" data-view="algorithms">Algorithm lab</button>
+          <button class="nav-item" data-view="benchmarks">Benchmarks</button>
         </nav>
         <div class="sidebar-bottom"><span class="live-dot"></span> System online</div>
       </aside>
@@ -27,6 +30,7 @@
           <div class="top-actions"><button class="icon-button" aria-label="Notifications">&#128276;</button><div class="operator">SA</div></div>
         </header>
 
+        <!-- ========== DASHBOARD ========== -->
         <section id="dashboard" class="view active-view">
           <div class="stats-grid">
             <article class="stat-card"><p>Open service requests</p><strong id="open-total">--</strong><span>Awaiting action across the network</span></article>
@@ -34,27 +38,214 @@
             <article class="stat-card"><p>Available resources</p><strong id="available-total">--</strong><span>Ready for assignment</span></article>
             <article class="stat-card"><p>Active locations</p><strong id="location-total">--</strong><span>Connected care sites</span></article>
           </div>
-
+          <div class="stats-grid" style="margin-top:14px">
+            <article class="stat-card"><p>Audit log depth</p><strong id="audit-depth">0</strong><span>Dispatch actions on undo stack</span></article>
+            <article class="stat-card"><p>Total resources</p><strong id="resource-total">--</strong><span>Across the network</span></article>
+          </div>
           <div class="dashboard-grid">
             <section class="panel dispatch-panel"><div class="panel-heading"><div><p class="eyebrow">Dispatch queue</p><h2>Priority actions</h2></div><button class="text-button" data-go="requests">View all</button></div><div id="priority-list" class="priority-list"></div></section>
             <section class="panel network-panel"><div class="panel-heading"><div><p class="eyebrow">Network pulse</p><h2>Service flow</h2></div><span class="pill neutral">Live data</span></div><div id="status-bars" class="status-bars"></div><div class="map-card"><div class="map-grid"></div><span class="map-point a"></span><span class="map-point b"></span><span class="map-point c"></span><div class="map-copy"><strong>30 resources</strong><span>distributed across Ghana</span></div></div></section>
           </div>
         </section>
 
+        <!-- ========== SERVICE REQUESTS ========== -->
         <section id="requests" class="view">
           <div class="toolbar"><label class="search"><span>Search</span><input id="request-search" placeholder="Request ID, type, or location" /></label><select id="status-filter"><option value="ALL">All statuses</option><option>PENDING</option><option>ASSIGNED</option><option>IN_PROGRESS</option><option>COMPLETED</option><option>CANCELLED</option></select><select id="urgency-filter"><option value="ALL">All urgency levels</option><option value="5">Critical</option><option value="4">High</option><option value="3">Medium</option><option value="2">Low</option><option value="1">Routine</option></select></div>
           <section class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">Service requests</p><h2>Dispatch register</h2></div><div><span id="results-count" class="muted"></span><button id="new-request" class="assign-button">New request</button></div></div><div class="table-wrap"><table><thead><tr><th>Request</th><th>Route</th><th>Urgency</th><th>Status</th><th>Deadline</th><th></th></tr></thead><tbody id="requests-table"></tbody></table></div></section>
         </section>
 
+        <!-- ========== RESOURCES ========== -->
         <section id="resources" class="view"><section class="panel"><div class="panel-heading"><div><p class="eyebrow">Fleet and team</p><h2>Resource availability</h2></div><span class="muted">Greedy assignment ready</span></div><div id="resource-grid" class="resource-grid"></div></section></section>
 
-        <section id="routing" class="view"><div class="route-layout"><section class="panel route-controls"><p class="eyebrow">Dijkstra route search</p><h2>Find the fastest connection</h2><label>From<select id="route-from"></select></label><label>To<select id="route-to"></select></label><button id="route-button" class="primary-button">Calculate route</button><div id="route-result" class="route-result"></div></section><section class="route-stage"><div class="route-lines"><i></i><i></i><i></i><i></i></div><div class="route-node n1">L039</div><div class="route-node n2">L021</div><div class="route-node n3">L012</div><div class="route-node n4">L045</div><div class="route-caption">Road network visualization</div></section></div></section>
+        <!-- ========== ROUTE PLANNER ========== -->
+        <section id="routing" class="view">
+          <div class="route-layout">
+            <section class="panel route-controls">
+              <p class="eyebrow">Dijkstra route search</p>
+              <h2>Find the fastest connection</h2>
+              <label>From<select id="route-from"></select></label>
+              <label>To<select id="route-to"></select></label>
+              <button id="route-button" class="primary-button">Calculate route</button>
+              <div id="route-result" class="route-result"></div>
+            </section>
+            <section class="route-stage">
+              <div class="route-lines"><i></i><i></i><i></i><i></i></div>
+              <div class="route-node n1">From</div>
+              <div class="route-node n2">Hop</div>
+              <div class="route-node n3">Hop</div>
+              <div class="route-node n4">To</div>
+              <div class="route-caption">Road network visualization</div>
+            </section>
+          </div>
+        </section>
 
-        <section id="algorithms" class="view"><div class="algorithm-grid"><section class="panel"><p class="eyebrow">Scheduling engine</p><h2>Compare dispatch order</h2><div class="segmented"><button class="selected" data-order="fifo">FIFO</button><button data-order="urgency">Urgency</button><button data-order="score">Priority score</button></div><ol id="schedule-list" class="schedule-list"></ol></section><section class="panel"><p class="eyebrow">Budget selection</p><h2>Response-time optimization</h2><label class="budget-label">Available minutes <input id="budget-input" type="range" min="60" max="720" value="300" /><strong id="budget-value">300 min</strong></label><div id="budget-result" class="budget-result"></div></section><section class="panel"><p class="eyebrow">Tree lookup</p><h2>Find a request by ID</h2><div class="toolbar"><input id="index-input" placeholder="REQ0001" /><button id="index-button" class="assign-button">Search index</button></div><div id="index-result" class="muted"></div></section><section class="panel"><p class="eyebrow">Network planning</p><h2>Minimum-cost road network</h2><button id="mst-button" class="primary-button">Run Prim and Kruskal</button><div id="mst-result" class="budget-result"></div></section></div></section>
+        <!-- ========== DISPATCH CONSOLE ========== -->
+        <section id="dispatch" class="view">
+          <div class="dispatch-layout">
+            <section class="panel">
+              <p class="eyebrow">Pod 1: Greedy dispatch</p>
+              <h2>Automatic resource assignment</h2>
+              <p class="muted" style="margin-bottom:16px">Assigns the first available resource to each pending request in urgency order. Uses the greedy algorithm from SchedulingEngine.</p>
+              <button id="dispatch-button" class="primary-button">Run greedy dispatch</button>
+              <div id="dispatch-result" class="dispatch-result" style="margin-top:16px"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <div><p class="eyebrow">Audit stack</p><h2>Dispatch history</h2></div>
+                <button id="undo-button" class="assign-button" style="background:var(--red);color:#fff">Undo last</button>
+              </div>
+              <div id="audit-info" class="muted" style="margin-bottom:12px">Audit log depth: 0</div>
+              <div id="audit-log" class="audit-log"></div>
+            </section>
+          </div>
+        </section>
+
+        <!-- ========== SEARCH & SORT LAB ========== -->
+        <section id="search-sort" class="view">
+          <div class="algorithm-grid">
+            <section class="panel">
+              <p class="eyebrow">Pod 2: Sorting algorithms</p>
+              <h2>Compare request sorting</h2>
+              <div class="control-row">
+                <label>Algorithm<select id="sort-algorithm">
+                  <option value="quickSort">Quick Sort</option>
+                  <option value="mergeSort">Merge Sort</option>
+                  <option value="insertionSort">Insertion Sort</option>
+                  <option value="selectionSort">Selection Sort</option>
+                </select></label>
+                <label>Direction<select id="sort-direction">
+                  <option value="descending">Descending urgency</option>
+                  <option value="ascending">Ascending urgency</option>
+                </select></label>
+                <label>Top N<input id="sort-topn" type="number" min="1" max="300" value="10" style="width:80px" /></label>
+                <button id="sort-button" class="primary-button">Sort</button>
+              </div>
+              <div id="sort-result" class="sort-result"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Pod 2: Search algorithms</p>
+              <h2>Find request by ID</h2>
+              <p class="muted" style="margin-bottom:12px">Compares linear search O(n) vs binary search O(log n) on sorted data.</p>
+              <div class="control-row">
+                <input id="search-input" placeholder="REQ0001" style="flex:1" />
+                <button id="search-button" class="assign-button">Search</button>
+              </div>
+              <div id="search-result" class="search-result"></div>
+            </section>
+          </div>
+        </section>
+
+        <!-- ========== ALGORITHM LAB ========== -->
+        <section id="algorithms" class="view">
+          <div class="algorithm-grid">
+            <section class="panel">
+              <p class="eyebrow">Scheduling engine</p>
+              <h2>Compare dispatch order</h2>
+              <div class="segmented"><button class="selected" data-order="fifo">FIFO</button><button data-order="urgency">Urgency</button><button data-order="score">Priority score</button></div>
+              <ol id="schedule-list" class="schedule-list"></ol>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Budget selection</p>
+              <h2>Response-time optimization</h2>
+              <label class="budget-label">Available minutes <input id="budget-input" type="range" min="60" max="720" value="300" /><strong id="budget-value">300 min</strong></label>
+              <div id="budget-result" class="budget-result"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Tree lookup</p>
+              <h2>Fast index search</h2>
+              <div class="toolbar"><input id="index-input" placeholder="REQ0001" /><button id="index-button" class="assign-button">Search index</button></div>
+              <div id="index-result" class="muted"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Network planning</p>
+              <h2>Minimum-cost road network</h2>
+              <button id="mst-button" class="primary-button">Run Prim and Kruskal</button>
+              <div id="mst-result" class="budget-result"></div>
+              <div id="mst-detail" class="mst-detail"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Graph traversal</p>
+              <h2>BFS and DFS exploration</h2>
+              <div class="control-row">
+                <select id="traversal-start">
+                  <option value="">Loading locations...</option>
+                </select>
+                <div class="segmented" style="margin:0"><button class="selected" data-traversal="bfs">BFS</button><button data-traversal="dfs">DFS</button></div>
+                <button id="traversal-button" class="assign-button">Run</button>
+              </div>
+              <div id="traversal-result" class="traversal-result"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Dynamic programming</p>
+              <h2>Knapsack trace</h2>
+              <div id="dp-trace" class="dp-trace"></div>
+            </section>
+          </div>
+        </section>
+
+        <!-- ========== BENCHMARKS ========== -->
+        <section id="benchmarks" class="view">
+          <div class="algorithm-grid">
+            <section class="panel" style="grid-column:1/-1">
+              <div class="panel-heading">
+                <div><p class="eyebrow">Section 9: Performance experiments</p><h2>Run all benchmarks</h2></div>
+                <button id="benchmark-run" class="primary-button">Execute benchmarks</button>
+              </div>
+              <p class="muted" style="margin:0 0 16px">Times each algorithm across minimum input sizes, averages 3 runs, and records results to the algorithm_runs table and CSV.</p>
+              <div id="benchmark-status" class="muted"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Search comparison</p>
+              <h2>Linear vs Binary</h2>
+              <div id="bench-search" class="bench-table"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Sorting comparison</p>
+              <h2>4 algorithms</h2>
+              <div id="bench-sort" class="bench-table"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Data structure throughput</p>
+              <h2>HashMap &amp; Heap</h2>
+              <div id="bench-ds" class="bench-table"></div>
+            </section>
+            <section class="panel">
+              <p class="eyebrow">Graph algorithms</p>
+              <h2>BFS, DFS, Dijkstra, Prim</h2>
+              <div id="bench-graph" class="bench-table"></div>
+            </section>
+          </div>
+        </section>
+
       </section>
     </main>
-    <dialog id="assignment-dialog"><form method="dialog"><button class="dialog-close" value="cancel" aria-label="Close">&#215;</button><p class="eyebrow">Smart assignment</p><h2 id="dialog-title">Assign resource</h2><p id="dialog-copy" class="muted"></p><label>Available resource<select id="assignment-resource"></select></label><button id="confirm-assignment" value="default" class="primary-button">Confirm assignment</button></form></dialog>
-    <dialog id="request-dialog"><form id="request-form"><button class="dialog-close" type="button" value="cancel" aria-label="Close">&#215;</button><p class="eyebrow">New service request</p><h2>Open a dispatch request</h2><label>Source<select name="source" id="new-source"></select></label><label>Destination<select name="destination" id="new-destination"></select></label><label>Service category<input name="category" value="Patient Referral" required /></label><label>Urgency<select name="urgency"><option value="5">5 — Critical</option><option value="4">4 — High</option><option value="3" selected>3 — Medium</option><option value="2">2 — Low</option><option value="1">1 — Routine</option></select></label><button class="primary-button">Create request</button></form></dialog>
+
+    <!-- Assignment dialog -->
+    <dialog id="assignment-dialog">
+      <form method="dialog">
+        <button class="dialog-close" value="cancel" aria-label="Close">&#215;</button>
+        <p class="eyebrow">Smart assignment</p>
+        <h2 id="dialog-title">Assign resource</h2>
+        <p id="dialog-copy" class="muted"></p>
+        <label>Available resource<select id="assignment-resource"></select></label>
+        <button id="confirm-assignment" value="default" class="primary-button">Confirm assignment</button>
+      </form>
+    </dialog>
+
+    <!-- New request dialog -->
+    <dialog id="request-dialog">
+      <form id="request-form">
+        <button class="dialog-close" type="button" value="cancel" aria-label="Close">&#215;</button>
+        <p class="eyebrow">New service request</p>
+        <h2>Open a dispatch request</h2>
+        <label>Source<select name="source" id="new-source"></select></label>
+        <label>Destination<select name="destination" id="new-destination"></select></label>
+        <label>Service category<input name="category" value="Patient Referral" required /></label>
+        <label>Urgency<select name="urgency"><option value="5">5 — Critical</option><option value="4">4 — High</option><option value="3" selected>3 — Medium</option><option value="2">2 — Low</option><option value="1">1 — Routine</option></select></label>
+        <button class="primary-button">Create request</button>
+      </form>
+    </dialog>
+
     <script src="app.js"></script>
   </body>
 </html>

@@ -26,6 +26,9 @@ javac -d build\app -cp "lib\sqlite-jdbc.jar;build\app" @build\pod1.txt
 del build\*.txt 2>nul
 echo Build complete.
 echo.
+echo Stopping any previous instance...
+for /f "tokens=5" %%p in ('netstat -aon ^| findstr :8091 ^| findstr LISTENING') do taskkill /PID %%p /F >nul 2>&1
+echo.
 echo Starting CareRoute on http://127.0.0.1:8091
 echo Press Ctrl+C to stop.
 echo.

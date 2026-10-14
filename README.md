@@ -49,12 +49,7 @@ Each pod folder is **independently buildable and testable** — see the `build.s
 
 This project targets an environment where Maven Central isn't reachable, so instead of `pom.xml` dependency resolution we vendor the one real dependency (`sqlite-jdbc.jar`) directly in `lib/`, and use a small dependency-free test framework (`shared/.../util/SimpleTest.java`) instead of JUnit. If your machine *does* have normal internet access, you're welcome to convert this to a Maven/Gradle project — the package structure (`com.hospitaloptimizer.*`) already matches what Maven expects.
 
-## Before you submit
 
-1. **Replace the placeholder index numbers** in `shared/src/main/java/com/hospitaloptimizer/shared/util/Params.java` with your team's real index numbers, and re-verify the derived constants (hash table size, priority weight, route penalty, seed, budget).
-2. **Fill in the machine specification** at the top of `pod1_data_database/src/main/java/com/hospitaloptimizer/pod1/Benchmark.java` and re-run `./run.sh` → option 8 on that machine, then re-run `python3` plotting (see `docs/performance/`) to regenerate graphs with your own numbers.
-3. Fill out `docs/evidence_note.md` explaining how your team obtained/adapted the dataset.
-4. Read `docs/pod_assignments.md` and make sure every member can defend the one data structure and one algorithm they're assigned, live.
 
 ## License / academic integrity
 
